@@ -1,6 +1,5 @@
 import { isBusinessEmail } from "@/lib/email/utils";
 import { db } from "@/server/db";
-import { validateRecaptcha } from "@/lib/recaptcha";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare, hash } from "bcryptjs";
 import { getAccount } from "models/account";
@@ -26,17 +25,14 @@ if (isAuthProviderEnabled("credentials")) {
       id: "credentials",
       credentials: {
         email: { type: "email" },
-        password: { type: "password" },
-        recaptchaToken: { type: "text" }
+        password: { type: "password" }
       },
       async authorize(credentials) {
         if (!credentials) {
           throw new Error("Không tìm thấy thông tin đăng nhập nào.");
         }
 
-        const { email, password, recaptchaToken } = credentials;
-
-        await validateRecaptcha(recaptchaToken);
+        const { email, password } = credentials;
 
         if (!email || !password) {
           return null;

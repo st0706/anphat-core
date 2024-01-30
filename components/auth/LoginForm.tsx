@@ -1,7 +1,6 @@
 "use client";
 
 import { Loading } from "@/components/shared";
-import GoogleReCAPTCHA from "@/components/shared/GoogleReCAPTCHA";
 import useNotify, { Variant } from "@/hooks/useNotify";
 import env from "@/lib/env";
 import { invalid, required } from "@/lib/messages";
@@ -9,8 +8,7 @@ import { Alert, Anchor, Button, Group, MantineColor, PasswordInput, Stack, Text,
 import { useForm } from "@mantine/form";
 import { getCsrfToken, signIn, useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+import { useEffect, useState } from "react";
 
 interface Message {
   text: string | null;
@@ -21,9 +19,7 @@ const LoginForm = () => {
   const router = useRouter();
   const params = useParams();
   const { status } = useSession();
-  const [recaptchaToken, setRecaptchaToken] = useState("");
   const [message, setMessage] = useState<Message>({ text: null, color: null });
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { notify } = useNotify();
 
@@ -68,12 +64,10 @@ const LoginForm = () => {
       password,
       csrfToken,
       redirect: false,
-      callbackUrl: redirectUrl,
-      recaptchaToken
+      callbackUrl: redirectUrl
     });
 
     form.reset();
-    recaptchaRef.current?.reset();
 
     if (!response?.ok) {
       if (response?.error) {
@@ -107,7 +101,6 @@ const LoginForm = () => {
           </Group>
           <PasswordInput id="password" name="password" placeholder="Mật khẩu" {...form.getInputProps("password")} />
         </Stack>
-        <GoogleReCAPTCHA recaptchaRef={recaptchaRef} onChange={setRecaptchaToken} />
         <Button variant="filled" type="submit" loading={isSubmitting} disabled={!form.isDirty} fullWidth mt="md">
           Đăng nhập
         </Button>

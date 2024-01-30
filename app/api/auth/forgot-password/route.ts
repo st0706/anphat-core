@@ -3,17 +3,13 @@ import { sendPasswordResetEmail } from "@/lib/email/sendPasswordResetEmail";
 import { ApiError } from "@/lib/errors";
 import { db } from "@/server/db";
 import { recordMetric } from "@/lib/metrics";
-import { validateRecaptcha } from "@/lib/recaptcha";
 import { NextResponse } from "next/server";
 import { invalid } from "@/lib/messages";
 export async function POST(req: Request) {
   try {
-    const { email, recaptchaToken } = (await req.json()) as {
+    const { email } = (await req.json()) as {
       email: string;
-      recaptchaToken: string;
     };
-
-    await validateRecaptcha(recaptchaToken);
 
     if (!email || !validateEmail(email)) {
       throw new ApiError(422, invalid("Địa chỉ email"));

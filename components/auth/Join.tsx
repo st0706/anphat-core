@@ -6,15 +6,11 @@ import { invalid, required } from "@/lib/messages";
 import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
-import GoogleReCAPTCHA from "../shared/GoogleReCAPTCHA";
+import { useState } from "react";
 
 const Join = () => {
   const router = useRouter();
-  const [recaptchaToken, setRecaptchaToken] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const { notifyResult } = useNotify();
 
   const form = useForm({
@@ -40,8 +36,7 @@ const Join = () => {
       method: "POST",
       headers: defaultHeaders,
       body: JSON.stringify({
-        ...values,
-        recaptchaToken
+        ...values
       })
     });
 
@@ -49,8 +44,6 @@ const Join = () => {
     //   User & { confirmEmail: boolean }
     // >;
     const json = await response.json();
-
-    recaptchaRef.current?.reset();
 
     if (!response.ok) {
       notifyResult(Action.Create, "tài khoản", false, json.message);
@@ -89,7 +82,6 @@ const Join = () => {
           {...form.getInputProps("email")}
         />
         <PasswordInput label="Mật khẩu" name="password" placeholder="Mật khẩu" {...form.getInputProps("password")} />
-        <GoogleReCAPTCHA recaptchaRef={recaptchaRef} onChange={setRecaptchaToken} />
         <Button type="submit" loading={isSubmitting} disabled={!form.isDirty} fullWidth mt="md">
           Tạo tài khoản
         </Button>

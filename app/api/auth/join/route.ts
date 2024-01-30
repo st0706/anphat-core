@@ -8,21 +8,17 @@ import { ApiError } from "@/lib/errors";
 import { createTeam, isTeamExists } from "models/team";
 import { createUser, getUser } from "models/user";
 import { recordMetric } from "@/lib/metrics";
-import { validateRecaptcha } from "@/lib/recaptcha";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
     // Signup the user
-    const { name, email, password, team, recaptchaToken } = (await req.json()) as {
+    const { name, email, password, team } = (await req.json()) as {
       name: string;
       email: string;
       password: string;
       team: string;
-      recaptchaToken: string;
     };
-
-    await validateRecaptcha(recaptchaToken);
 
     const existingUser = await getUser({ email });
 
