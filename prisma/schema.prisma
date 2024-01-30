@@ -1,0 +1,372 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  OWNER
+  MEMBER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model User {
+  id            String       @id @default(uuid())
+  name          String
+  email         String       @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @default(now())
+  teamMembers   TeamMember[]
+  accounts      Account[]
+  sessions      Session[]
+  invitations   Invitation[]
+}
+
+model Organization {
+  id                  String                @id @default(uuid())
+  parentId            String?
+  teamId              String
+  name                String
+  organizationId      String
+  logo                String?
+  abbreviation        String?
+  phoneNumber         String?
+  email               String?
+  provinceAddress     String?
+  districtAddress     String?
+  wardAddress         String?
+  detailAddress       String?
+  provinceVATBill     String?
+  districtVATBill     String?
+  wardVATBill         String?
+  detailVATBill       String?
+  website             String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @default(now())
+  team                Team                  @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  OrganizationToStaff OrganizationToStaff[]
+}
+
+model Team {
+  id              String         @id @default(uuid())
+  name            String
+  slug            String         @unique
+  domain          String?        @unique
+  defaultRole     Role           @default(MEMBER)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @default(now())
+  logo            String?
+  members         TeamMember[]
+  invitations     Invitation[]
+  apiKeys         ApiKey[]
+  abbreviation    String?
+  bussinessCode   String?
+  provinceAddress String?
+  districtAddress String?
+  wardAddress     String?
+  detailAddress   String?
+  provinceVATBill String?
+  districtVATBill String?
+  wardVATBill     String?
+  detailVATBill   String?
+  phoneNumber     String?
+  email           String?
+  zalo            String?
+  facebook        String?
+  code            String?
+  localCode       Int?
+  organizations   Organization[]
+}
+
+model TeamMember {
+  id        String   @id @default(uuid())
+  teamId    String
+  userId    String
+  role      Role     @default(MEMBER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@index([userId])
+}
+
+model Invitation {
+  id        String   @id @default(uuid())
+  teamId    String
+  email     String
+  role      Role     @default(MEMBER)
+  token     String   @unique
+  expires   DateTime
+  invitedBy String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  user User @relation(fields: [invitedBy], references: [id], onDelete: Cascade)
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, email])
+}
+
+model PasswordReset {
+  id        Int      @id @default(autoincrement())
+  email     String
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime
+}
+
+model ApiKey {
+  id         String    @id @default(uuid())
+  name       String
+  teamId     String
+  hashedKey  String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  expiresAt  DateTime?
+  lastUsedAt DateTime?
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model Application {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  logo        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model OrganizationToStaff {
+  id             String       @id @default(uuid())
+  organizationId String
+  staffId        String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  staff          Staff        @relation(fields: [staffId], references: [staffID], onDelete: Cascade)
+}
+
+model Staff {
+  id                String  @id @default(uuid())
+  staffID           String  @unique
+  familyName        String
+  name              String
+  otherName         String?
+  engName           String?
+  gender            Gender
+  dob               BigInt
+  cityCountry       String
+  districtCountry   String
+  wardCountry       String
+  cityPermanent     String
+  districtPermanent String
+  wardPermanent     String
+  addressPermanent  String
+  cityCurrent       String
+  districtCurrent   String
+  wardCurrent       String
+  currentAddress    String
+  CID               String // CCCD
+  issuedBy          String
+  issuedDay         BigInt
+  phoneNumber       String
+  email             String
+  organizationId    String
+  organizationName  String
+  ethnicMinority    String
+  nationality       String
+  religion          String?
+  culturalLevel     String
+  dojCYU            BigInt? // day of joining Ho Chi Minh Communist Youth Union
+  dojCPV            BigInt? // day of joining Communist Party of VietNam
+  officalDojCPV     BigInt? // offical day of joining Communist Party of VietNam
+  avatar            String?
+  habit             String?
+
+  OrganizationToStaff  OrganizationToStaff[]
+  SchedulePractitioner SchedulePractitioner[]
+
+  @@unique([staffID, email, CID])
+}
+
+model Medicine {
+  id                     String  @id @default(uuid())
+  registrationNumber     String
+  name                   String
+  ingredientCode         String
+  ingredient             String
+  ingredientRegistration String
+  sugarCode              String
+  sugar                  String
+  content                String?
+  pack                   String
+  manufacture            String
+  country                String
+
+  @@unique([name, registrationNumber])
+}
+
+model Disease {
+  id             String @id @default(uuid())
+  chapternumber  String
+  chaptercode    String
+  chaptername1   String
+  chaptername2   String
+  maingroupcode  String
+  maingroupname1 String
+  maingroupname2 String
+  subgroupcode1  String
+  subgroupname1  String
+  subgroupname11 String
+  subgroupcode2  String
+  subgroupname2  String
+  subgroupname22 String
+  typecode       String
+  typename1      String
+  typename2      String
+  diseasecode    String @unique
+  name1          String
+  name2          String
+  teamcode       String
+  detailcode     String
+  description1   String
+  description2   String
+}
+
+model Cities {
+  id        String      @id @default(uuid())
+  cityCode  String      @unique
+  cityName  String
+  Wards     Wards[]
+  Districts Districts[]
+}
+
+model Districts {
+  id           String  @id @default(uuid())
+  districtCode String  @unique
+  districtName String
+  cityId       String
+  cityName     String
+  Wards        Wards[]
+
+  city Cities @relation(fields: [cityId], references: [cityCode], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Wards {
+  id           String @id @default(uuid())
+  wardCode     String
+  wardName     String
+  cityId       String
+  cityName     String
+  districtId   String
+  districtName String
+
+  city     Cities    @relation(fields: [cityId], references: [cityCode], onDelete: Cascade, onUpdate: Cascade)
+  district Districts @relation(fields: [districtId], references: [districtCode], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([wardCode, districtId])
+}
+
+model BloodCode {
+  id                String   @id @default(uuid())
+  bloodCode         String   @unique
+  unitsPreparations String
+  actualVolume      String
+  note              String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
+}
+
+model Patient {
+  id          Int       @id @unique @default(autoincrement())
+  patientId   String    @unique
+  patientName String
+  description String?
+  gender      Gender
+  doB         BigInt
+  address     String?
+  Phone       String
+  Email       String?
+  lastVisited DateTime?
+
+  schedule Schedule[]
+}
+
+enum ScheduleStatus {
+  SCHEDULED
+  CANCELED
+  PERFORMED
+}
+
+model Schedule {
+  id               String         @id @unique @default(uuid())
+  scheduleDateTime BigInt
+  atTime           BigInt
+  status           ScheduleStatus
+  patientId        Int
+  description      String?
+  createdBy        String
+
+  patient Patient? @relation(fields: [patientId], references: [id])
+
+  practitioners SchedulePractitioner[]
+}
+
+model SchedulePractitioner {
+  id             String @id @unique @default(uuid())
+  scheduleId     String
+  practitionerId String
+
+  schedule      Schedule? @relation(fields: [scheduleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  practitioners Staff?    @relation(fields: [practitionerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}

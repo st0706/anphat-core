@@ -1,0 +1,12 @@
+.divider {
+  margin-bottom: 0;
+}
+
+.divider > span {
+  font-size: 16px;
+  color: #1971c2;
+}
+
+.divider > span::after {
+  border-top-color: #1d9bf9 !important;
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Cơ bản",
+    "featured": false,
+    "monthly": "15 triệu",
+    "annually": "120 triệu",
+    "benefits": ["10 người dùng", "1TB dung lượng", "Hỗ trợ 24/7"]
+  },
+  {
+    "name": "Chuyên nghiệp",
+    "featured": true,
+    "monthly": "25 triệu",
+    "annually": "200 triệu",
+    "benefits": ["20 người dùng", "10TB dung lượng", "Hỗ trợ 24/7"]
+  },
+  {
+    "name": "Nâng cao",
+    "featured": false,
+    "monthly": "50 triệu",
+    "annually": "400 triệu",
+    "benefits": ["50 người dùng", "20TB dung lượng", "Hỗ trợ 24/7"]
+  }
+]

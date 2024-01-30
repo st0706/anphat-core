@@ -1,0 +1,76 @@
+.input {
+  display: inline-block;
+  /* width: calc(100%/2 - var(--mantine-spacing-md)); */
+  height: 80px;
+}
+
+.avatar {
+  width: 16%;
+  height: 16%;
+}
+
+.inputsRight {
+  width: 80%;
+}
+
+.divider {
+  margin-bottom: 0;
+}
+
+.divider > span {
+  font-size: 16px;
+  color: #1971c2;
+}
+
+.divider > span::after {
+  border-top-color: #1d9bf9 !important;
+}
+
+.dividerBlock {
+  border-top-color: #1d9bf9 !important;
+}
+
+@media only screen and (min-width: 12em) {
+  .input {
+    width: 100%;
+  }
+
+  .inputAddress {
+    width: 100%;
+  }
+
+  .avatar {
+    width: 100%;
+  }
+
+  .inputsRight {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 36em) {
+  .input {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 48em) {
+  .inputAddress {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 60em) {
+  .inputAddress {
+    width: calc(100% / 3 - var(--mantine-spacing-sm));
+  }
+
+  .avatar {
+    width: 16% !important;
+    height: 16% !important;
+  }
+
+  .inputsRight {
+    width: 80%;
+  }
+}
