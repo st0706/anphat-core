@@ -67,7 +67,7 @@ export function FeatureSection() {
 
       <Container size={560} p={0}>
         <Text size="sm" className={classes.description}>
-          AnPhat Cloud được phát triển dựa trên các công nghệ tiên tiến nhất <br />
+          AnPhat Core được phát triển dựa trên các công nghệ tiên tiến nhất <br />
           và sự thấu hiểu nghiệp vụ quản lý bệnh viện.
         </Text>
       </Container>

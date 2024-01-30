@@ -51,7 +51,7 @@ const AcceptTeamInvitation = () => {
     <Paper withBorder shadow="md" p={30} mt={30} radius="md">
       <Stack>
         <Title order={2} ta="center">
-          {`${invitation.team.name} mời bạn sử dụng ứng dụng AnPhat Cloud.`}
+          {`${invitation.team.name} mời bạn sử dụng ứng dụng AnPhat Core.`}
         </Title>
         <Title order={3} ta="center">
           {status === "authenticated"

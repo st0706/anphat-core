@@ -2,7 +2,7 @@ import packageInfo from "../package.json";
 
 const app = {
   version: packageInfo.version,
-  name: "AnPhat Cloud",
+  name: "AnPhat Core",
   description: "AnPhat Smart Medical Solution",
   location: "Hanoi, Vietnam",
   // logoUrl: "https://dev.pacs.store/logo.png",

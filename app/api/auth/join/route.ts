@@ -63,24 +63,24 @@ export async function POST(req: Request) {
     }
 
     // Send account verification email
-    if (env.confirmEmail) {
-      const verificationToken = await db.verificationToken.create({
-        data: {
-          identifier: email,
-          token: generateToken(),
-          expires: new Date(Date.now() + 24 * 60 * 60 * 1000) // Expires in 24 hours
-        }
-      });
+    // if (env.confirmEmail) {
+    //   const verificationToken = await db.verificationToken.create({
+    //     data: {
+    //       identifier: email,
+    //       token: generateToken(),
+    //       expires: new Date(Date.now() + 24 * 60 * 60 * 1000) // Expires in 24 hours
+    //     }
+    //   });
 
-      await sendVerificationEmail({ user, verificationToken });
-    }
+    //   await sendVerificationEmail({ user, verificationToken });
+    // }
 
     recordMetric("user.signup");
     return NextResponse.json(
       {
         data: {
-          user,
-          confirmEmail: env.confirmEmail
+          user
+          // confirmEmail: env.confirmEmail
         }
       },
       { status: 200 }

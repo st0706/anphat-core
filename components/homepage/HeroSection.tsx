@@ -8,7 +8,7 @@ const HeroSection = () => {
       <Overlay color="#000" opacity={0.65} zIndex={1} />
 
       <div className={classes.inner}>
-        <Title className={classes.title}>AnPhat Cloud</Title>
+        <Title className={classes.title}>AnPhat Core</Title>
 
         <Container size={640}>
           <Text size="lg" className={classes.description}>
