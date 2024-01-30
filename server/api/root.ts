@@ -2,7 +2,6 @@ import { staffRouter } from "./routers/staff";
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { organizationRouter } from "./routers/organization";
-import { deegreeRouter } from "./routers/degree";
 import { adDivisionRouter } from "./routers/adDivision";
 import { medicineRouter } from "./routers/medicine";
 import { diseaseRouter } from "./routers/disease";
@@ -22,7 +21,6 @@ const t = initTRPC.create({
 export const appRouter = t.router({
   organization: organizationRouter,
   staff: staffRouter,
-  deegree: deegreeRouter,
   adDivision: adDivisionRouter,
   medicine: medicineRouter,
   disease: diseaseRouter,
