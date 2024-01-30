@@ -9,8 +9,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return "";
-  if (process.env.NEXT_PUBLIC_VERCEL_URL) return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   if (process.env.APP_URL) return process.env.APP_URL;
   return "http://localhost:3001";
 }

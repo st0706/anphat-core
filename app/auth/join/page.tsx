@@ -9,11 +9,10 @@ export const metadata: Metadata = {
   title: "Đăng ký dùng thử - " + app.name
 };
 
-export default async function Signup({ params }: ParamsWithToken) {
+export default async function Signup(params) {
   const authProviders = authProviderEnabled();
   const session = await getServerAuthSession();
   const token = params.token;
-
   return (
     <>
       <Title order={2} ta="center">

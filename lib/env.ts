@@ -6,12 +6,12 @@ const env = {
 
   // SMTP configuration for NextAuth
   smtp: {
-    service: process.env.NEXT_PUBLIC_SMTP_SERVICE,
-    host: process.env.NEXT_PUBLIC_SMTP_HOST,
-    port: Number(process.env.NEXT_PUBLIC_SMTP_PORT),
-    user: process.env.NEXT_PUBLIC_SMTP_USER,
-    password: process.env.NEXT_PUBLIC_SMTP_PASSWORD,
-    from: process.env.NEXT_PUBLIC_SMTP_FROM
+    service: process.env.SMTP_SERVICE,
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    user: process.env.SMTP_USER,
+    password: process.env.SMTP_PASSWORD,
+    from: process.env.SMTP_FROM
   },
 
   // NextAuth configuration
@@ -51,7 +51,7 @@ const env = {
 
   hideLandingPage: process.env.HIDE_LANDING_PAGE === "true" ? true : false,
 
-  darkModeEnabled: process.env.NEXT_PUBLIC_DARK_MODE === "false" ? false : true,
+  darkModeEnabled: process.env.DARK_MODE === "false" ? false : true,
 
   teamFeatures: {
     webhook: process.env.FEATURE_TEAM_WEBHOOK === "false" ? false : true,
@@ -60,7 +60,7 @@ const env = {
   },
 
   recaptcha: {
-    siteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+    siteKey: process.env.RECAPTCHA_SITE_KEY,
     secretKey: process.env.RECAPTCHA_SECRET_KEY
   }
 };
